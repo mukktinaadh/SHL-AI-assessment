@@ -5,8 +5,8 @@
 A stateless conversational AI agent that guides recruiters from a vague hiring intent to a grounded shortlist of SHL Individual Test Assessments.
 
 ## Live API
-- **Health Check:** `GET https://<your-render-url>/health`
-- **Chat Endpoint:** `POST https://<your-render-url>/chat`
+- **Health Check:** `GET https://shl-assessment-recommender-g6wx.onrender.com/health`
+- **Chat Endpoint:** `POST https://shl-assessment-recommender-g6wx.onrender.com/chat`
 
 ## Architecture
 ```text
