@@ -1,5 +1,6 @@
 # SHL Conversational Assessment Recommender
 
+[![CI](https://github.com/mukktinaadh/SHL-AI-assessment/actions/workflows/ci.yml/badge.svg)](https://github.com/mukktinaadh/SHL-AI-assessment/actions/workflows/ci.yml)
 A stateless conversational AI agent that guides hiring managers and recruiters from a vague hiring intent to a precise, grounded shortlist of SHL Individual Test Assessments through multi-turn dialogue.
 
 ## Tech Stack
