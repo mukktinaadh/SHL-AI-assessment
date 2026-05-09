@@ -4,8 +4,6 @@ __pycache__/
 *.pyc
 *.pyo
 .DS_Store
-backend/data/chroma_db/
-backend/data/catalog.json
 node_modules/
 .next/
 graphify-out/
