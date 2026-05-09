@@ -12,7 +12,11 @@ services:
       - key: GROQ_API_KEY
         sync: false  # secret — set manually in Render dashboard
       # Do NOT set PORT — Render injects it; overriding breaks proxy → app routing.
+      # Pin 3.11.x — Python 3.12+ on Render may lack wheels; 3.14 forces pydantic-core Rust builds that fail.
       - key: PYTHON_VERSION
-        value: "3.11"
+        value: "3.11.9"
+      # If Render uses Nixpacks for this repo, this also forces 3.11 (safe if unused).
+      - key: NIXPACKS_PYTHON_VERSION
+        value: "3.11.9"
     healthCheckPath: /health
     autoDeploy: true
