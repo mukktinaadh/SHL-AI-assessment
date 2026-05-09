@@ -17,15 +17,7 @@ services:
         sync: false  # secret — set manually in Render dashboard
       - key: PORT
         value: 8000
-      - key: CATALOG_PATH
-        value: /data/catalog.json
-      - key: CHROMA_PATH
-        value: /data/chroma_db
       - key: PYTHON_VERSION
         value: "3.11"
-    disk:
-      name: shl-data
-      mountPath: /data
-      sizeGB: 1
     healthCheckPath: /health
     autoDeploy: true
