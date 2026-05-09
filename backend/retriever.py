@@ -12,6 +12,8 @@ Vector DB:       ChromaDB (in-process, cosine distance, persisted to disk)
 Source: PRD Section 8 (RAG Pipeline) and Section 14 Steps 2 & 7.
 """
 
+from __future__ import annotations
+
 import json
 import logging
 import os
