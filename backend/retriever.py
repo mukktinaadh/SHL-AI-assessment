@@ -17,27 +17,32 @@ import logging
 import os
 
 import chromadb
+from chromadb.config import Settings
 from sentence_transformers import SentenceTransformer
 
 logger = logging.getLogger(__name__)
 
 # ---------------------------------------------------------------------------
-# Embedding model (loaded once, cached in module scope)
+# Embedding model (lazy singleton — never load at import time)
 # ---------------------------------------------------------------------------
-_embedding_model: SentenceTransformer | None = None
+_model: SentenceTransformer | None = None
 
 COLLECTION_NAME = "shl_catalog"
 EMBEDDING_MODEL_NAME = "all-MiniLM-L6-v2"
 
 
-def _get_embedding_model() -> SentenceTransformer:
-    """Lazy-load the embedding model (singleton)."""
-    global _embedding_model
-    if _embedding_model is None:
+def get_model() -> SentenceTransformer:
+    global _model
+    if _model is None:
         logger.info("Loading embedding model '%s' ...", EMBEDDING_MODEL_NAME)
-        _embedding_model = SentenceTransformer(EMBEDDING_MODEL_NAME)
-        logger.info("Embedding model loaded (dim=%d)", _embedding_model.get_sentence_embedding_dimension())
-    return _embedding_model
+        _model = SentenceTransformer(EMBEDDING_MODEL_NAME)
+        logger.info("Embedding model loaded (dim=%d)", _model.get_sentence_embedding_dimension())
+    return _model
+
+
+def chroma_settings() -> Settings:
+    """Shared Chroma client settings (no telemetry; quieter logs on Render)."""
+    return Settings(anonymized_telemetry=False)
 
 
 # ---------------------------------------------------------------------------
@@ -63,8 +68,7 @@ def build_index(catalog_path: str, persist_path: str) -> None:
         catalog = json.load(f)
     logger.info("Loaded %d assessments", len(catalog))
 
-    # Load embedding model
-    model = _get_embedding_model()
+    model = get_model()
 
     # Prepare documents, embeddings, metadata, and IDs
     documents = []
@@ -105,7 +109,7 @@ def build_index(catalog_path: str, persist_path: str) -> None:
 
     # Create / reset ChromaDB collection
     os.makedirs(persist_path, exist_ok=True)
-    client = chromadb.PersistentClient(path=persist_path)
+    client = chromadb.PersistentClient(path=persist_path, settings=chroma_settings())
 
     # Delete existing collection if present (fresh rebuild)
     try:
@@ -137,12 +141,16 @@ def build_index(catalog_path: str, persist_path: str) -> None:
 # ---------------------------------------------------------------------------
 # Load index
 # ---------------------------------------------------------------------------
-def load_index(persist_path: str) -> chromadb.Collection:
+def load_index(
+    persist_path: str,
+    client: chromadb.PersistentClient | None = None,
+) -> chromadb.Collection:
     """
     Load a persisted ChromaDB collection.
 
     Args:
         persist_path: Directory where ChromaDB data is persisted.
+        client: Optional existing PersistentClient (e.g. from lifespan with Settings).
 
     Returns:
         The 'shl_catalog' Collection object.
@@ -150,7 +158,8 @@ def load_index(persist_path: str) -> chromadb.Collection:
     Raises:
         ValueError: If the collection doesn't exist.
     """
-    client = chromadb.PersistentClient(path=persist_path)
+    if client is None:
+        client = chromadb.PersistentClient(path=persist_path, settings=chroma_settings())
     collection = client.get_collection(name=COLLECTION_NAME)
     logger.info("Loaded collection '%s' with %d items", COLLECTION_NAME, collection.count())
     return collection
@@ -176,7 +185,7 @@ def retrieve(collection: chromadb.Collection, query: str, n: int = 20) -> list[d
     Returns:
         List of dicts sorted by relevance (most similar first).
     """
-    model = _get_embedding_model()
+    model = get_model()
     query_embedding = model.encode([query], normalize_embeddings=True).tolist()
 
     results = collection.query(

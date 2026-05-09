@@ -16,6 +16,8 @@ import logging
 import os
 from contextlib import asynccontextmanager
 
+import chromadb
+from chromadb.config import Settings
 from fastapi import FastAPI, Request
 from fastapi.exceptions import RequestValidationError
 from fastapi.middleware.cors import CORSMiddleware
@@ -76,10 +78,14 @@ async def lifespan(app: FastAPI):
             if not item.get("url"):
                 logger.warning("Catalog item %d (%s) is missing a url field", i, item.get("name", "UNKNOWN"))
 
-    # --- Load ChromaDB index ---
+    # --- Load ChromaDB index (telemetry off → less overhead / quieter logs on Render) ---
     logger.info("Loading ChromaDB index from %s ...", CHROMA_PATH)
     try:
-        app.state.collection = load_index(CHROMA_PATH)
+        chroma_client = chromadb.PersistentClient(
+            path=CHROMA_PATH,
+            settings=Settings(anonymized_telemetry=False),
+        )
+        app.state.collection = load_index(CHROMA_PATH, client=chroma_client)
     except Exception as exc:
         logger.error("Failed to load ChromaDB index: %s — run scripts/build_index.py first", exc)
         app.state.collection = None
