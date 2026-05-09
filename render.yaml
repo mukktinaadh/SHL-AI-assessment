@@ -1,0 +1,31 @@
+services:
+  - type: web
+    name: shl-assessment-recommender
+    runtime: python
+    region: oregon
+    plan: free
+    buildCommand: |
+      pip install -r backend/requirements.txt && \
+      cd backend && \
+      python scraper.py && \
+      python scripts/build_index.py
+    startCommand: cd backend && uvicorn main:app --host 0.0.0.0 --port $PORT
+    envVars:
+      - key: GEMINI_API_KEY
+        sync: false  # secret — set manually in Render dashboard
+      - key: GROQ_API_KEY
+        sync: false  # secret — set manually in Render dashboard
+      - key: PORT
+        value: 8000
+      - key: CATALOG_PATH
+        value: /data/catalog.json
+      - key: CHROMA_PATH
+        value: /data/chroma_db
+      - key: PYTHON_VERSION
+        value: "3.11"
+    disk:
+      name: shl-data
+      mountPath: /data
+      sizeGB: 1
+    healthCheckPath: /health
+    autoDeploy: true

@@ -1,0 +1,12 @@
+{
+  "id": "trace_06_sales",
+  "description": "Entry level sales position",
+  "turns": [
+    {"role": "user", "content": "I need assessments for an entry-level sales position"}
+  ],
+  "expected": [
+    "Entry Level Sales Solution",
+    "Retail Sales and Service Simulation",
+    "OPQ MQ Sales Report"
+  ]
+}

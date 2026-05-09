@@ -1,0 +1,13 @@
+{
+  "id": "trace_07_personality",
+  "description": "Personality assessment for management",
+  "turns": [
+    {"role": "user", "content": "I need a comprehensive personality assessment"},
+    {"role": "user", "content": "It's for manager-level candidates, we want to understand their behavioral traits"}
+  ],
+  "expected": [
+    "Occupational Personality Questionnaire OPQ32r",
+    "OPQ Manager Plus Report",
+    "OPQ Universal Competency Report 2.0"
+  ]
+}

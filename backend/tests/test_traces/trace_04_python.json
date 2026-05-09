@@ -1,0 +1,13 @@
+{
+  "id": "trace_04_python",
+  "description": "Python developer skills test",
+  "turns": [
+    {"role": "user", "content": "Do you have a Python programming test?"},
+    {"role": "user", "content": "Yes, entry to mid level developer role"}
+  ],
+  "expected": [
+    "Python (New)",
+    "Automata - Fix (New)",
+    "Automata Front End"
+  ]
+}

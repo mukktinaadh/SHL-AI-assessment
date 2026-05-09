@@ -1,0 +1,13 @@
+{
+  "id": "trace_05_customer_service",
+  "description": "Customer service phone role",
+  "turns": [
+    {"role": "user", "content": "I'm hiring for a customer service phone representative"},
+    {"role": "user", "content": "Entry level, needs to handle inbound calls"}
+  ],
+  "expected": [
+    "Customer Service Phone Simulation",
+    "Customer Service Phone Solution",
+    "Contact Center Call Simulation (New)"
+  ]
+}

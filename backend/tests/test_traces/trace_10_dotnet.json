@@ -1,0 +1,14 @@
+{
+  "id": "trace_10_dotnet",
+  "description": ".NET developer technical assessment",
+  "turns": [
+    {"role": "user", "content": "Looking for technical assessments for a .NET developer"},
+    {"role": "user", "content": "They need to know .NET Framework, MVC, and WCF"}
+  ],
+  "expected": [
+    ".NET Framework 4.5",
+    ".NET MVC (New)",
+    ".NET WCF (New)",
+    ".NET WPF (New)"
+  ]
+}

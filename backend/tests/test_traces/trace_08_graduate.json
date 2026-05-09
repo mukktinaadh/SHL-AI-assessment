@@ -1,0 +1,12 @@
+{
+  "id": "trace_08_graduate",
+  "description": "Graduate recruitment scenarios",
+  "turns": [
+    {"role": "user", "content": "We're doing a graduate recruitment drive and need scenario-based assessments"}
+  ],
+  "expected": [
+    "Graduate Scenarios",
+    "Graduate Scenarios Narrative Report",
+    "Graduate Scenarios Profile Report"
+  ]
+}

@@ -1,0 +1,14 @@
+{
+  "id": "trace_03_cognitive",
+  "description": "Graduate cognitive ability testing",
+  "turns": [
+    {"role": "user", "content": "I want to test cognitive and reasoning ability for graduate hires"},
+    {"role": "user", "content": "Looking for numerical and verbal aptitude tests"}
+  ],
+  "expected": [
+    "Verify - G+",
+    "Verify - Numerical Ability",
+    "Verify - Verbal Ability - Next Generation",
+    "SHL Verify Interactive G+"
+  ]
+}

@@ -1,0 +1,13 @@
+{
+  "id": "trace_02_leadership",
+  "description": "Senior leadership assessment",
+  "turns": [
+    {"role": "user", "content": "I need personality and leadership assessments for senior manager candidates"}
+  ],
+  "expected": [
+    "Enterprise Leadership Report 1.0",
+    "Enterprise Leadership Report 2.0",
+    "Occupational Personality Questionnaire OPQ32r",
+    "HiPo Assessment Report 2.0"
+  ]
+}

@@ -1,0 +1,15 @@
+{
+  "id": "trace_01_java_dev",
+  "description": "Mid-level Java developer hiring",
+  "turns": [
+    {"role": "user", "content": "I need to assess candidates for a mid-level Java developer position"},
+    {"role": "user", "content": "They should know core Java and frameworks, mid-professional level"}
+  ],
+  "expected": [
+    "Core Java (Advanced Level) (New)",
+    "Core Java (Entry Level) (New)",
+    "Java 8 (New)",
+    "Java Frameworks (New)",
+    "Java Design Patterns (New)"
+  ]
+}

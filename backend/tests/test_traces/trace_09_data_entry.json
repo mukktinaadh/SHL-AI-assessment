@@ -1,0 +1,12 @@
+{
+  "id": "trace_09_data_entry",
+  "description": "Data entry clerk assessment",
+  "turns": [
+    {"role": "user", "content": "I need to test data entry speed and accuracy for a clerical role"}
+  ],
+  "expected": [
+    "Data Entry (New)",
+    "Filing - Alphanumeric",
+    "Filing - Numbers"
+  ]
+}
