@@ -11,8 +11,7 @@ services:
         sync: false  # secret — set manually in Render dashboard
       - key: GROQ_API_KEY
         sync: false  # secret — set manually in Render dashboard
-      - key: PORT
-        value: 8000
+      # Do NOT set PORT — Render injects it; overriding breaks proxy → app routing.
       - key: PYTHON_VERSION
         value: "3.11"
     healthCheckPath: /health
