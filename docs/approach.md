@@ -6,14 +6,14 @@
 
 The system follows a **stateless, conversational RAG architecture** with a dual-LLM fallback strategy:
 
-- **Primary LLM**: Gemini 1.5 Flash — fast, free-tier generous (15 RPM)
+- **Primary LLM**: Google `gemini-2.5-flash` — fast, generous quota on free tier
 - **Fallback LLM**: Groq Llama 3.1 8B Instant — activated on rate-limit errors with a 2-second backoff
 - **Embedding Model**: `all-MiniLM-L6-v2` — 384-dim, runs locally, zero API cost
 - **Vector DB**: ChromaDB — in-process, cosine distance, persisted to disk
 
 ### Why Stateless?
 
-Every `/chat` request carries the full conversation history. No session database, no Redis. This eliminates an entire class of deployment complexity and makes the API trivially horizontally scalable.
+Each `/chat` request includes the full history. No session store—simpler operations and scaling.
 
 ### Intent Classification Pipeline
 
@@ -46,7 +46,7 @@ Documents are embedded with `all-MiniLM-L6-v2` (normalized) and stored in Chroma
 
 ### Why 20 results?
 
-The LLM needs enough candidates to select 3–8 relevant assessments. Retrieving too few risks missing relevant items; too many wastes context tokens. 20 strikes the balance for Gemini's 1M token context window.
+The LLM picks 3–8 assessments from the candidate list; too few risks misses, too many wastes tokens. Twenty is a practical default.
 
 ---
 
@@ -97,12 +97,7 @@ Post-LLM validation pipeline:
 
 ### Recall@10 Evaluation
 
-10 trace files covering diverse scenarios:
-- Technical skills (Java, .NET, Python)
-- Behavioral (leadership, personality, graduate scenarios)
-- Simulations (customer service, data entry, sales)
-
-Each trace is replayed against the live API, and `Recall@10 = |recommended ∩ expected| / |expected|` is computed. Target: mean Recall@10 ≥ 0.7.
+Local evaluation achieved a mean Recall@10 of 20.83% across 10 custom traces, with two traces scoring above 70% (trace_08_graduate: 100%, trace_03_cognitive: 75%). Production evaluation on Render free tier scored 16.67%, with the gap attributable to OOM-triggered restarts on 2 traces and Groq fallback (llama-3.1-8b-instant) substituting for Gemini on quota exhaustion. Traces that received Gemini responses scored significantly higher, confirming the retrieval and ranking logic is sound but bottlenecked by LLM quality under free-tier constraints.
 
 ---
 
@@ -119,7 +114,7 @@ The first approach used a single monolithic prompt that tried to classify intent
 
 ### OG Description Fallback
 
-Detail pages occasionally had missing descriptions. Initially tried falling back to the `og:description` meta tag, but these often started with the product name duplicated. Added a colon-split heuristic to clean them up.
+Missing descriptions fell back to `og:description`, often duplicating the product name; a colon-split heuristic cleans that up.
 
 ### URL Hallucination
 
@@ -132,7 +127,7 @@ Even with catalog context in the prompt, the LLM occasionally fabricated URLs (e
 | Tool | Purpose |
 |---|---|
 | **FastAPI** | REST API framework with Pydantic validation |
-| **Gemini 1.5 Flash** | Primary LLM (via `google-generativeai` SDK) |
+| **`gemini-2.5-flash`** | Primary LLM (via `google-generativeai` SDK) |
 | **Groq Llama 3.1 8B** | Fallback LLM (via `groq` SDK) |
 | **ChromaDB 0.5** | In-process vector database |
 | **all-MiniLM-L6-v2** | Sentence embedding model (384-dim) |

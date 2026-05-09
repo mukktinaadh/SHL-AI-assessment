@@ -14,7 +14,7 @@ User
   → FastAPI 
     → Intent Classifier (CLARIFY, RECOMMEND, REFUSE)
       → ChromaDB RAG (Vector Search on Catalog)
-        → Gemini 2.5 Flash / Groq Llama 3.1 8B 
+        → `gemini-2.5-flash` / Groq Llama 3.1 8B 
           → Validated Response (Whitelist Filter)
             → User
 ```
@@ -23,7 +23,7 @@ User
 | Component | Technology |
 |---|---|
 | **Backend** | FastAPI (Python 3.11) |
-| **Primary LLM** | Google Gemini 2.5 Flash |
+| **Primary LLM** | Google `gemini-2.5-flash` |
 | **Fallback LLM** | Groq Llama 3.1 8B Instant |
 | **Embeddings** | `sentence-transformers/all-MiniLM-L6-v2` |
 | **Vector DB** | ChromaDB (In-process, Persisted) |
